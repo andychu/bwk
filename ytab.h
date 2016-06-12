@@ -1,101 +1,261 @@
+/* A Bison parser, made by GNU Bison 3.0.2.  */
 
-typedef union  {
+/* Bison interface for Yacc-like parsers in C
+
+   Copyright (C) 1984, 1989-1990, 2000-2013 Free Software Foundation, Inc.
+
+   This program is free software: you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation, either version 3 of the License, or
+   (at your option) any later version.
+
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
+
+/* As a special exception, you may create a larger work that contains
+   part or all of the Bison parser skeleton and distribute that work
+   under terms of your choice, so long as that work isn't itself a
+   parser generator using the skeleton or a modified version thereof
+   as a parser skeleton.  Alternatively, if you modify or redistribute
+   the parser skeleton itself, you may (at your option) remove this
+   special exception, which will cause the skeleton and the resulting
+   Bison output files to be licensed under the GNU General Public
+   License without this special exception.
+
+   This special exception was added by the Free Software Foundation in
+   version 2.2 of Bison.  */
+
+#ifndef YY_YY_Y_TAB_H_INCLUDED
+# define YY_YY_Y_TAB_H_INCLUDED
+/* Debug traces.  */
+#ifndef YYDEBUG
+# define YYDEBUG 0
+#endif
+#if YYDEBUG
+extern int yydebug;
+#endif
+
+/* Token type.  */
+#ifndef YYTOKENTYPE
+# define YYTOKENTYPE
+  enum yytokentype
+  {
+    FIRSTTOKEN = 258,
+    PROGRAM = 259,
+    PASTAT = 260,
+    PASTAT2 = 261,
+    XBEGIN = 262,
+    XEND = 263,
+    NL = 264,
+    ARRAY = 265,
+    MATCH = 266,
+    NOTMATCH = 267,
+    MATCHOP = 268,
+    FINAL = 269,
+    DOT = 270,
+    ALL = 271,
+    CCL = 272,
+    NCCL = 273,
+    CHAR = 274,
+    OR = 275,
+    STAR = 276,
+    QUEST = 277,
+    PLUS = 278,
+    EMPTYRE = 279,
+    AND = 280,
+    BOR = 281,
+    APPEND = 282,
+    EQ = 283,
+    GE = 284,
+    GT = 285,
+    LE = 286,
+    LT = 287,
+    NE = 288,
+    IN = 289,
+    ARG = 290,
+    BLTIN = 291,
+    BREAK = 292,
+    CLOSE = 293,
+    CONTINUE = 294,
+    DELETE = 295,
+    DO = 296,
+    EXIT = 297,
+    FOR = 298,
+    FUNC = 299,
+    SUB = 300,
+    GSUB = 301,
+    IF = 302,
+    INDEX = 303,
+    LSUBSTR = 304,
+    MATCHFCN = 305,
+    NEXT = 306,
+    NEXTFILE = 307,
+    ADD = 308,
+    MINUS = 309,
+    MULT = 310,
+    DIVIDE = 311,
+    MOD = 312,
+    ASSIGN = 313,
+    ASGNOP = 314,
+    ADDEQ = 315,
+    SUBEQ = 316,
+    MULTEQ = 317,
+    DIVEQ = 318,
+    MODEQ = 319,
+    POWEQ = 320,
+    PRINT = 321,
+    PRINTF = 322,
+    SPRINTF = 323,
+    ELSE = 324,
+    INTEST = 325,
+    CONDEXPR = 326,
+    POSTINCR = 327,
+    PREINCR = 328,
+    POSTDECR = 329,
+    PREDECR = 330,
+    VAR = 331,
+    IVAR = 332,
+    VARNF = 333,
+    CALL = 334,
+    NUMBER = 335,
+    STRING = 336,
+    REGEXPR = 337,
+    GETLINE = 338,
+    RETURN = 339,
+    SPLIT = 340,
+    SUBSTR = 341,
+    WHILE = 342,
+    CAT = 343,
+    NOT = 344,
+    UMINUS = 345,
+    POWER = 346,
+    DECR = 347,
+    INCR = 348,
+    INDIRECT = 349,
+    LASTTOKEN = 350
+  };
+#endif
+/* Tokens.  */
+#define FIRSTTOKEN 258
+#define PROGRAM 259
+#define PASTAT 260
+#define PASTAT2 261
+#define XBEGIN 262
+#define XEND 263
+#define NL 264
+#define ARRAY 265
+#define MATCH 266
+#define NOTMATCH 267
+#define MATCHOP 268
+#define FINAL 269
+#define DOT 270
+#define ALL 271
+#define CCL 272
+#define NCCL 273
+#define CHAR 274
+#define OR 275
+#define STAR 276
+#define QUEST 277
+#define PLUS 278
+#define EMPTYRE 279
+#define AND 280
+#define BOR 281
+#define APPEND 282
+#define EQ 283
+#define GE 284
+#define GT 285
+#define LE 286
+#define LT 287
+#define NE 288
+#define IN 289
+#define ARG 290
+#define BLTIN 291
+#define BREAK 292
+#define CLOSE 293
+#define CONTINUE 294
+#define DELETE 295
+#define DO 296
+#define EXIT 297
+#define FOR 298
+#define FUNC 299
+#define SUB 300
+#define GSUB 301
+#define IF 302
+#define INDEX 303
+#define LSUBSTR 304
+#define MATCHFCN 305
+#define NEXT 306
+#define NEXTFILE 307
+#define ADD 308
+#define MINUS 309
+#define MULT 310
+#define DIVIDE 311
+#define MOD 312
+#define ASSIGN 313
+#define ASGNOP 314
+#define ADDEQ 315
+#define SUBEQ 316
+#define MULTEQ 317
+#define DIVEQ 318
+#define MODEQ 319
+#define POWEQ 320
+#define PRINT 321
+#define PRINTF 322
+#define SPRINTF 323
+#define ELSE 324
+#define INTEST 325
+#define CONDEXPR 326
+#define POSTINCR 327
+#define PREINCR 328
+#define POSTDECR 329
+#define PREDECR 330
+#define VAR 331
+#define IVAR 332
+#define VARNF 333
+#define CALL 334
+#define NUMBER 335
+#define STRING 336
+#define REGEXPR 337
+#define GETLINE 338
+#define RETURN 339
+#define SPLIT 340
+#define SUBSTR 341
+#define WHILE 342
+#define CAT 343
+#define NOT 344
+#define UMINUS 345
+#define POWER 346
+#define DECR 347
+#define INCR 348
+#define INDIRECT 349
+#define LASTTOKEN 350
+
+/* Value type.  */
+#if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
+typedef union YYSTYPE YYSTYPE;
+union YYSTYPE
+{
+#line 41 "awkgram.y" /* yacc.c:1909  */
+
 	Node	*p;
 	Cell	*cp;
 	int	i;
 	char	*s;
-}	YYSTYPE;
-extern	YYSTYPE	yylval;
-#define	FIRSTTOKEN	57346
-#define	PROGRAM	57347
-#define	PASTAT	57348
-#define	PASTAT2	57349
-#define	XBEGIN	57350
-#define	XEND	57351
-#define	NL	57352
-#define	ARRAY	57353
-#define	MATCH	57354
-#define	NOTMATCH	57355
-#define	MATCHOP	57356
-#define	FINAL	57357
-#define	DOT	57358
-#define	ALL	57359
-#define	CCL	57360
-#define	NCCL	57361
-#define	CHAR	57362
-#define	OR	57363
-#define	STAR	57364
-#define	QUEST	57365
-#define	PLUS	57366
-#define	EMPTYRE	57367
-#define	AND	57368
-#define	BOR	57369
-#define	APPEND	57370
-#define	EQ	57371
-#define	GE	57372
-#define	GT	57373
-#define	LE	57374
-#define	LT	57375
-#define	NE	57376
-#define	IN	57377
-#define	ARG	57378
-#define	BLTIN	57379
-#define	BREAK	57380
-#define	CLOSE	57381
-#define	CONTINUE	57382
-#define	DELETE	57383
-#define	DO	57384
-#define	EXIT	57385
-#define	FOR	57386
-#define	FUNC	57387
-#define	SUB	57388
-#define	GSUB	57389
-#define	IF	57390
-#define	INDEX	57391
-#define	LSUBSTR	57392
-#define	MATCHFCN	57393
-#define	NEXT	57394
-#define	NEXTFILE	57395
-#define	ADD	57396
-#define	MINUS	57397
-#define	MULT	57398
-#define	DIVIDE	57399
-#define	MOD	57400
-#define	ASSIGN	57401
-#define	ASGNOP	57402
-#define	ADDEQ	57403
-#define	SUBEQ	57404
-#define	MULTEQ	57405
-#define	DIVEQ	57406
-#define	MODEQ	57407
-#define	POWEQ	57408
-#define	PRINT	57409
-#define	PRINTF	57410
-#define	SPRINTF	57411
-#define	ELSE	57412
-#define	INTEST	57413
-#define	CONDEXPR	57414
-#define	POSTINCR	57415
-#define	PREINCR	57416
-#define	POSTDECR	57417
-#define	PREDECR	57418
-#define	VAR	57419
-#define	IVAR	57420
-#define	VARNF	57421
-#define	CALL	57422
-#define	NUMBER	57423
-#define	STRING	57424
-#define	REGEXPR	57425
-#define	GETLINE	57426
-#define	RETURN	57427
-#define	SPLIT	57428
-#define	SUBSTR	57429
-#define	WHILE	57430
-#define	CAT	57431
-#define	NOT	57432
-#define	UMINUS	57433
-#define	POWER	57434
-#define	DECR	57435
-#define	INCR	57436
-#define	INDIRECT	57437
-#define	LASTTOKEN	57438
+
+#line 251 "y.tab.h" /* yacc.c:1909  */
+};
+# define YYSTYPE_IS_TRIVIAL 1
+# define YYSTYPE_IS_DECLARED 1
+#endif
+
+
+extern YYSTYPE yylval;
+
+int yyparse (void);
+
+#endif /* !YY_YY_Y_TAB_H_INCLUDED  */
