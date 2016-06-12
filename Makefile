@@ -83,4 +83,7 @@ names:
 	@echo $(LISTING)
 
 clean:
-	rm -f a.out *.o *.obj maketab maketab.exe *.bb *.bbg *.da *.gcov *.gcno *.gcda # proctab.c
+	rm -f \
+		a.out *.o *.obj maketab \
+		*.bb *.bbg *.da *.gcov *.gcno *.gcda \
+		proctab.c ytab.c ytab.h
