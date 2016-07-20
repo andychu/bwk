@@ -80,8 +80,7 @@ Notes on Regex Implementation / Algorithm
 
 The file `b.c` is Awk's regular expression engine.  It implements the
 "McNaughton-Yamada-Thompson algorithm to convert a regular expression to an
-NFA", algorithm 3.23 in the Dragon Book, as mentioned here in the footnotes
-here:
+NFA", algorithm 3.23 in the Dragon Book, as mentioned in the footnotes here:
 
 https://swtch.com/~rsc/regexp/regexp2.html
 
