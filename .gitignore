@@ -1,0 +1,8 @@
+_gcov
+_obj
+_tmp
+*.swp
+# Paths baked into the test harness.  Not worth changing them now.
+a.out
+tests/echo
+tests/time
