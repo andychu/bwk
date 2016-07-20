@@ -35,27 +35,22 @@ Details
 `test.sh` has a few entry points.  They correspond to what was documented in
 `tests/README.TESTS` and automated with `tests/REGRESS`.
 
-These tests have golden output, and thus are are independent of the system awk:
+These tests have golden output:
 
 - `./test.sh golden` `(T.*)`
   - This includes `T.beebe` which runs the scripts in `tests/beebe` ("tests from
     Nelson Beebe from gawk test suite")
 
-These tests require a previous awk binary, e.g. a system awk or previous bwk
+These tests require another awk binary, e.g. a system awk or previous `bwk`
 binary:
 
 - `./test.sh compare_t` (`t.*`) -- "random sampling of awk constructions
   collected over the years"
-- `./test.sh compare_lilly` (`lilly.*`) -- "miscelleanous RE tests from Bruce
+- `./test.sh compare_lilly` (`lilly.*`) -- "miscellaneous RE tests from Bruce
   Lilly"
 - `./test.sh compare_book` (`p.*`) -- tests from "The AWK Programming
   Environment" book
 - `./test.sh compare_perf` (`tt.**`) -- performance tests
-
-NOTE: Some shell scripts in the test directory still hard-code `../a.out`.  I
-wanted to change it to always use a variant like `../bwk` or `../bwk-asan`.
-Instead of changing everything, _prepare_bin makes `a.out` to the selected
-variant.
 
 Summary of Changes
 ------------------
