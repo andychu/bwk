@@ -29,6 +29,11 @@ instrumented binary.  For example:
 This runs a subset of tests with an ASAN-instrumented binary.  I currently get
 one `heap-use-after-free` error (see `test-results/asan.log`).
 
+This ASAN error can reproduced without the test suite:
+
+    $ export ASAN_SYMBOLIZER_PATH=$CLANG_DIR/bin/llvm-symbolizer 
+    $ ./bwk-asan -f tests/t.split2a </dev/null
+
 Details
 -------
 
