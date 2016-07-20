@@ -38,6 +38,8 @@ Details
 These tests have golden output, and thus are are independent of the system awk:
 
 - `./test.sh golden` `(T.*)`
+  - This includes `T.beebe` which runs the scripts in `tests/beebe` ("tests from
+    Nelson Beebe from gawk test suite")
 
 These tests require a previous awk binary, e.g. a system awk or previous bwk
 binary:
@@ -54,6 +56,24 @@ NOTE: Some shell scripts in the test directory still hard-code `../a.out`.  I
 wanted to change it to always use a variant like `../bwk` or `../bwk-asan`.
 Instead of changing everything, _prepare_bin makes `a.out` to the selected
 variant.
+
+Summary of Changes
+------------------
+
+- Minor fixes to run on Linux/Ubuntu (e.g. yacc/bison invocation; don't assume '.' is in $PATH).
+  Sorry Windows support was probably broken in the process.
+- Added build variants for LLVM sanitizers (`make all`).  Removed generated files from the repo.
+- Rewrote and cleaned up the test suite, allowing it to run against arbitrary
+  build variants.  There were also some cleanups like expanding the "beebe.tar"
+  file into tests/beebe, instead of untarring it on every test run.
+
+The last two changes are can be seen in commit
+[759a20da421e4a049c7a22e4e9e791e5b82e8b94](https://github.com/andychu/bwk/commit/759a20da421e4a049c7a22e4e9e791e5b82e8b94)
+
+The actual source code hasn't changed.  Running the tests against instrumented
+binaries HAS revealed some bugs, which could be fixed.  But I haven't fixed
+them, since I lost the original motivation for hacking on this codebase (seeing
+if Awk could be turned into a more modern language.)
 
 TODO
 ----
