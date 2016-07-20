@@ -22,8 +22,8 @@ Sanitizer, etc.)
 
 3) 
 
-   $ cd tests
-   $ ./test.sh compare_t ../bwk-asan
+    $ cd tests
+    $ ./test.sh compare_t ../bwk-asan
 
 This runs a subset of tests with an ASAN-instrumented binary.  I currently get
 one `heap-use-after-free` error (see `test-results/asan.log`).
@@ -31,9 +31,29 @@ one `heap-use-after-free` error (see `test-results/asan.log`).
 Details
 -------
 
-TODO: Document what README.TESTS did, and the differences.
+`test.sh` has a few entry points.  They correspond to what was documented in
+`tests/README.TESTS` and automated with `tests/REGRESS`.
 
-NOTE: Shell scripts in the test directory still hard-code `../a.out` in some
-cases.  I wanted to change it to always use a variant like `../bwk` or
-`../bwk-asan`.  Instead of changing everything, _prepare_bin makes `a.out` to
-the selected variant.
+These tests have golden output, and thus are are independent of the system awk:
+
+- `./test.sh golden` `(T.*)`
+
+These tests require a previous awk binary, e.g. a system awk or previous bwk
+binary:
+
+- `./test.sh compare_t` (`t.*`) -- "random sampling of awk constructions
+  collected over the years"
+- `./test.sh compare_book` (`p.*`) -- tests from "The AWK Programming
+  Environment" book
+- `./test.sh compare_perf` (`tt.**`) -- performance tests
+
+NOTE: Some shell scripts in the test directory still hard-code `../a.out`.  I
+wanted to change it to always use a variant like `../bwk` or `../bwk-asan`.
+Instead of changing everything, _prepare_bin makes `a.out` to the selected
+variant.
+
+TODO
+----
+
+- Show nice coverage output
+- Automate the cross product of (test suite, sanitizer)
