@@ -75,6 +75,22 @@ binaries HAS revealed some bugs, which could be fixed.  But I haven't fixed
 them, since I lost the original motivation for hacking on this codebase (seeing
 if Awk could be turned into a more modern language.)
 
+Notes on Regex Implementation / Algorithm 
+-----------------------------------------
+
+The file `b.c` is Awk's regular expression engine.  It implements the
+"McNaughton-Yamada-Thompson algorithm to convert a regular expression to an
+NFA", algorithm 3.23 in the Dragon Book, as mentioned here in the footnotes
+here:
+
+https://swtch.com/~rsc/regexp/regexp2.html
+
+I see the `makedfa()` function, which is derived from combinations of NFA
+states (`fatab`).  This is a guaranteed linear-time algorithm, is in contrast
+to exponential backtracking algorithm used by Perl/Python/etc.:
+
+https://swtch.com/~rsc/regexp/regexp1.html
+
 TODO
 ----
 
