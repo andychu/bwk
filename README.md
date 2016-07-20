@@ -2,8 +2,8 @@ This is Kernighan's awk, a.k.a. "One True Awk", with the source code and test
 suite combined.  It includes some fairly extensive cleanups and enhancements
 related to build and test automation.
 
-Original source: https://www.cs.princeton.edu/~bwk/btl.mirror/ (as of the
-latest update is from 2012/12/20)
+Original source: https://www.cs.princeton.edu/~bwk/btl.mirror/ (as of
+2016/7/20, the latest update is from 2012/12/20)
 
 Another mirror, without the build and test changes:
 https://github.com/onetrueawk/awk
@@ -20,7 +20,8 @@ Ubuntu 14.04.)
 build variants with runtime instrumentation added by LLVM sanitizers (Address
 Sanitizer, etc.)
 
-3) 
+3) Select one of the 5 test suites (see below), and run it against an
+instrumented binary.  For example:
 
     $ cd tests
     $ ./test.sh compare_t ../bwk-asan
@@ -43,6 +44,8 @@ binary:
 
 - `./test.sh compare_t` (`t.*`) -- "random sampling of awk constructions
   collected over the years"
+- `./test.sh compare_lilly` (`lilly.*`) -- "miscelleanous RE tests from Bruce
+  Lilly"
 - `./test.sh compare_book` (`p.*`) -- tests from "The AWK Programming
   Environment" book
 - `./test.sh compare_perf` (`tt.**`) -- performance tests
