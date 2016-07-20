@@ -20,8 +20,10 @@ export UBSAN_SYMBOLIZER_PATH=$sym
 
 gcc echo.c -o echo && echo echo compiled
 
-# A constant that is used by all the tests.  Not changing this.
-readonly AWK=../a.out
+# A constant that is used by a lot of the original test scripts.  Since we
+# don't want to change it all those files, we make a symlink like ../a.out ->
+# bwk-asan, so we can run tests against arbitrary build variants.
+readonly AWK_SYMLINK=../a.out
 
 _print_header() {
   local oldawk=$1
@@ -52,7 +54,7 @@ golden() {
   _prepare_bin $awk
 
   for i in T.*; do 
-    awk=$AWK ./$i
+    awk=$AWK_SYMLINK ./$i
   done
   # TODO: Do the tests all use $awk, or a.out too?
   echo "Ran $(grep '$awk' T.* | wc -l) test cases"
@@ -82,7 +84,7 @@ compare_book() {
   for i in p.*; do
     echo "$i:"
     $oldawk -f $i test.countries test.countries >foo1 
-    $AWK -f $i test.countries test.countries >foo2 
+    $AWK_SYMLINK -f $i test.countries test.countries >foo2 
     if ! cmp -s foo1 foo2; then
       echo -n "$i: FAILED"
     fi
@@ -114,7 +116,7 @@ compare_lilly() {
 
   # NOTE: Somehow './time' doesn't work here
   awk -v awk=$oldawk "$test_runner" <lilly.progs >foo1 2>&1
-  awk -v awk=$AWK "$test_runner" <lilly.progs >foo2 2>&1
+  awk -v awk=$AWK_SYMLINK "$test_runner" <lilly.progs >foo2 2>&1
 
   echo "Ran $(wc -l lilly.progs) lilly tests"
 
@@ -136,7 +138,7 @@ compare_t() {
   for i in t.*; do
     echo "$i:"
     $oldawk -f $i test.data >foo1 
-    $AWK -f $i test.data >foo2 
+    $AWK_SYMLINK -f $i test.data >foo2 
     if ! cmp -s foo1 foo2; then
       echo -n "$i: FAILED"
     fi
@@ -183,7 +185,7 @@ compare_perf() {
     # ind <$i
     $time $oldawk -f $i $td >foo2 2>foo2t
     cat foo2t
-    $time $AWK -f $i $td >foo1 2>foo1t
+    $time $AWK_SYMLINK -f $i $td >foo1 2>foo1t
     cat foo1t
     cmp foo1 foo2
 
