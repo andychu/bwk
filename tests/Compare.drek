@@ -32,4 +32,4 @@ do
 	cat foo1t foo2t >>footot
 done
 
-ctimes footot
+./ctimes footot
