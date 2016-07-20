@@ -1,0 +1,22 @@
+From
+
+    $ ./test.sh compare_t ../bwk-asan
+
+t.split2a:
+=================================================================
+==19892==ERROR: AddressSanitizer: heap-use-after-free on address 0x60400000c211 at pc 0x00000050b4c1 bp 0x7fff7a2551f0 sp 0x7fff7a2551e8
+READ of size 1 at 0x60400000c211 thread T0
+    #0 0x50b4c0 in split /home/andy/git/bwk/run.c:1338:2
+    #1 0x4fa95b in execute /home/andy/git/bwk/run.c:159:7
+    #2 0x50e5ce in printstat /home/andy/git/bwk/run.c:1586:7
+    #3 0x4fa95b in execute /home/andy/git/bwk/run.c:159:7
+    #4 0x4fb605 in program /home/andy/git/bwk/run.c:182:7
+    #5 0x4fa95b in execute /home/andy/git/bwk/run.c:159:7
+    #6 0x4f9fa9 in run /home/andy/git/bwk/run.c:134:2
+    #7 0x4e6f04 in main /home/andy/git/bwk/main.c:179:3
+    #8 0x7f38c9c30ec4 in __libc_start_main /build/eglibc-3GlaMS/eglibc-2.19/csu/libc-start.c:287
+    #9 0x419215 in _start (/home/andy/git/bwk/bwk-asan+0x419215)
+     
+...
+
+
