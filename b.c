@@ -22,7 +22,7 @@ ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF
 THIS SOFTWARE.
 ****************************************************************/
 
-/* lasciate ogne speranza, voi ch'intrate. */
+/* Lasciate ogni speranza, voi ch'entrate. */
 
 #define	DEBUG
 
