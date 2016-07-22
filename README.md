@@ -13,25 +13,26 @@ Instructions
 
 1) Download Clang binaries from http://llvm.org/releases/
 
-Modify `CLANG_DIR` in `env.sh` as appropriate.  (Notice I'm using Clang 3.8 on
-Ubuntu 14.04.)
+2) Modify `CLANG_DIR` in `env.sh` as appropriate.  (Notice I'm using Clang 3.8
+on Ubuntu 14.04.)
 
-2) Run `make all`.  You should get a bunch of `bwk-*` executables, which are
+Then `source env.sh`.
+
+3) Run `make all`.  You should get a bunch of `bwk-*` executables, which are
 build variants with runtime instrumentation added by LLVM sanitizers (Address
 Sanitizer, etc.)
 
-3) Select one of the 5 test suites (see below), and run it against an
+4) Select one of the 5 test suites (see below), and run it against an
 instrumented binary.  For example:
 
-    $ cd tests
-    $ ./test.sh compare_t ../bwk-asan
+    $ ./test.sh suite misc asan
 
-This runs a subset of tests with an ASAN-instrumented binary.  I currently get
-one `heap-use-after-free` error (see `test-results/asan.log`).
+This runs the `misc` suite against an ASAN-instrumented binary.  I currently
+get one `heap-use-after-free` error (see `test-results/asan.log`).
 
 This ASAN error can reproduced without the test suite:
 
-    $ export ASAN_SYMBOLIZER_PATH=$CLANG_DIR/bin/llvm-symbolizer 
+    $ source env.sh
     $ ./bwk-asan -f tests/t.split2a </dev/null
 
 Details
@@ -42,20 +43,18 @@ Details
 
 These tests have golden output:
 
-- `./test.sh golden` `(T.*)`
+- `golden` `(T.*)`
   - This includes `T.beebe` which runs the scripts in `tests/beebe` ("tests from
     Nelson Beebe from gawk test suite")
 
 These tests require another awk binary, e.g. a system awk or previous `bwk`
 binary:
 
-- `./test.sh compare_t` (`t.*`) -- "random sampling of awk constructions
-  collected over the years"
-- `./test.sh compare_lilly` (`lilly.*`) -- "miscellaneous RE tests from Bruce
-  Lilly"
-- `./test.sh compare_book` (`p.*`) -- tests from "The AWK Programming
-  Environment" book
-- `./test.sh compare_perf` (`tt.**`) -- performance tests
+- `misc` (`t.*`) -- "random sampling of awk constructions collected over the
+  years"
+- `lilly` (`lilly.*`) -- "miscellaneous RE tests from Bruce Lilly"
+- `book` (`p.*`) -- tests from "The AWK Programming Environment" book
+- `perf` (`tt.**`) -- performance tests
 
 Summary of Changes
 ------------------
@@ -93,5 +92,4 @@ https://swtch.com/~rsc/regexp/regexp1.html
 TODO
 ----
 
-- Show nice coverage output
-- Automate the cross product of (test suite, sanitizer)
+- Automate the cross product of (test suite, sanitizer) ?

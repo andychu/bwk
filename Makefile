@@ -178,7 +178,7 @@ tar:
 	ls -l awk.zip
 
 clean:
-	rm -r -f _obj
+	rm -r -f _obj _gcov
 	rm -f \
 		bwk bwk-* maketab \
 		*.bb *.bbg *.da \

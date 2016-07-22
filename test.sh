@@ -6,24 +6,21 @@
 
 set -o nounset
 
-# TODO: share with run.sh/
-CLANG_DIR=~/install/clang+llvm-3.8.0-x86_64-linux-gnu-ubuntu-14.04
-# dash weirdness; ~ is not expanded unless we do it separately?
-# http://stackoverflow.com/questions/8441473/tilde-expansion-doesnt-work-when-i-logged-into-gui
-readonly CLANG_DIR
-readonly sym=$CLANG_DIR/bin/llvm-symbolizer
+die() {
+  echo "$0: $@" 1>&2
+  exit 1
+}
 
-# These are needed to show line numbers in stack traces.
-export ASAN_SYMBOLIZER_PATH=$sym
-export MSAN_SYMBOLIZER_PATH=$sym
-export UBSAN_SYMBOLIZER_PATH=$sym
+readonly CLANG_DIR=${CLANG_DIR:-}
 
-gcc echo.c -o echo && echo echo compiled
+if test -z "$CLANG_DIR"; then
+  die 'CLANG_DIR should be set.  See env.sh'
+fi
 
 # A constant that is used by a lot of the original test scripts.  Since we
 # don't want to change it all those files, we make a symlink like ../a.out ->
 # bwk-asan, so we can run tests against arbitrary build variants.
-readonly AWK_SYMLINK=../a.out
+readonly AWK_SYMLINK=../a.out  # relative to tests/ dir
 
 _print_header() {
   local oldawk=$1
@@ -37,9 +34,9 @@ _print_header() {
 _prepare_bin() {
   local awk=$1
 
-  ( cd .. && make $awk test_bin )  # NOTE: pushd is not in /bin/sh
+  make $awk test_bin
 
-  ln -s -f --verbose $awk ../a.out
+  ln -s -f --verbose $awk a.out
 }
 
 setup() {
@@ -50,8 +47,6 @@ setup() {
 # We have the expected data
 golden() {
   local awk=${1:-bwk}
-
-  _prepare_bin $awk
 
   for i in T.*; do 
     awk=$AWK_SYMLINK ./$i
@@ -79,7 +74,6 @@ compare_book() {
   local newawk=${2:-bwk}
 
   _print_header $oldawk $newawk
-  _prepare_bin $newawk
 
   for i in p.*; do
     echo "$i:"
@@ -101,7 +95,6 @@ compare_lilly() {
   local newawk=${2:-bwk}
 
   _print_header $oldawk $newawk
-  _prepare_bin $newawk
 
   mkdir -p _tmp
   local test_runner='
@@ -128,12 +121,11 @@ compare_lilly() {
 }
 
 # Compare vs another version
-compare_t() {
+compare_misc() {
   local oldawk=${1:-awk}
   local newawk=${2:-bwk}
 
   _print_header $oldawk $newawk
-  _prepare_bin $newawk
 
   for i in t.*; do
     echo "$i:"
@@ -169,7 +161,6 @@ compare_perf() {
   local newawk=${2:-bwk}
 
   _print_header $oldawk $newawk
-  _prepare_bin $newawk
 
   time=./time
 
@@ -185,6 +176,7 @@ compare_perf() {
     # ind <$i
     $time $oldawk -f $i $td >foo2 2>foo2t
     cat foo2t
+
     $time $AWK_SYMLINK -f $i $td >foo1 2>foo1t
     cat foo1t
     cmp foo1 foo2
@@ -209,5 +201,124 @@ compare_perf_all() {
   # busybox awk
   compare_perf _tmp/awk
 }
+
+# NOTE: Sanitizer coverage doesn't have contention on counters, but bwk is
+# single-threaded so we don't care.
+
+# NOTE: Clang 3.8 has sancov.py; moving to sancov?
+sancov() {
+  # -covered-functions
+  # -not-covered-functions
+  local action='-print'
+  local action='-covered-functions'
+  local action='-not-covered-functions'
+
+  # This one is only in clang 4.0?
+  #local action='-html-report'
+
+  $CLANG_DIR/bin/sancov $action -obj ../bwk-sancov-func \
+    _tmp/cov/*.sancov
+}
+
+# Different tool
+# http://llvm.org/docs/CoverageMappingFormat.html
+llvm_cov() {
+  $CLANG_DIR/bin/llvm-cov "$@"
+}
+
+usage() {
+  cat <<EOF
+  $0 suite SUITE [MODE]
+  
+  SUITE is one of: golden, misc, book, lilly, perf, ALL
+  MODE is one of: none, asan, msan, ubsan, cov (default none)
+
+EOF
+}
+
+suite() {
+  if test $# -eq 0; then
+    usage
+    die "Suite required"
+  fi
+
+  local suite=$1  # golden, misc, book, lilly, perf
+  local mode=${2:-none}  # none, asan, msan, ubsan, cov
+
+  local bin
+  case $mode in 
+    none)
+      bin=bwk
+      ;;
+    asan)
+      bin=bwk-asan
+      ;;
+    msan)
+      bin=bwk-msan
+      ;;
+    ubsan)
+      bin=bwk-ubsan
+      ;;
+    cov)
+      # Creates _obj/bwk-cov/*.gcda
+      bin=bwk-cov
+      # Clear out the old data first.
+      rm --verbose _obj/bwk-cov/*.gcda
+      ;;
+    sancov)
+      bin=bwk-sancov-func
+
+      local dir=_tmp/sancov
+      mkdir -p $dir
+
+      # NOTE: Makefile builds on top of MSAN
+      export MSAN_OPTIONS="coverage=1:coverage_dir=$dir"
+      ;;
+    *)
+      usage
+      die "Invalid mode '$mode'"
+      ;;
+  esac
+
+  _prepare_bin $bin
+
+  cd tests/  # Test functions assume this (no pushd in dash)
+
+  case $suite in
+    golden) golden $bin ;;
+
+    # for all the comparisons, compare against default 'awk'
+    misc)   compare_misc '' $bin ;;
+    book)   compare_book '' $bin ;;
+    lilly)  compare_lilly '' $bin ;;
+    perf)   compare_perf '' $bin ;;
+
+    # Run all so coverage is unified
+    ALL)
+      golden $bin
+      compare_misc '' $bin
+      compare_book '' $bin
+      compare_lilly '' $bin
+      compare_perf '' $bin
+      ;;
+    *)
+      usage; die "Invalid test suite '$suite'"
+      ;;
+  esac
+
+  cd ..
+
+  case $mode in
+    cov)
+      local out=_gcov/${suite}.html
+      ./run.sh cov-html $out
+      ;;
+  esac
+}
+
+if test $# -eq 0; then
+  usage
+  die "Arguments required"
+fi
 
 "$@"
