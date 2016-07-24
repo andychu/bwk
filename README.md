@@ -56,6 +56,11 @@ binary:
 - `book` (`p.*`) -- tests from "The AWK Programming Environment" book
 - `perf` (`tt.**`) -- performance tests
 
+Coverage Results
+----------------
+
+See [test-results/coverage](test-results/coverage.md).
+
 Summary of Changes
 ------------------
 
